@@ -1,0 +1,7 @@
+services:
+  - type: cron
+    name: kktix-line-bot
+    env: docker
+    schedule: "*/1 * * * *"
+    dockerfilePath: ./Dockerfile
+    plan: free
