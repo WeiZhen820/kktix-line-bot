@@ -69,6 +69,13 @@ def run_check():
     check_kktix()
     return "Checked."
 
+@app.route("/groupid", methods=["POST"])
+def get_group_id():
+    data = request.get_json()
+    group_id = data.get("events", [{}])[0].get("source", {}).get("groupId")
+    print("收到群組 ID：", group_id)
+    return "OK", 200
+    
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
