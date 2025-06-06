@@ -36,7 +36,7 @@ def send_line_notify(message):
 
 def fetch_ticket_id_name_map():
     try:
-        res = requests.get(KKTIX_EVENT_URL, headers=headers)
+        res = requests.get(KKTIX_EVENT_URL, headers=headers, verify=False)
         soup = BeautifulSoup(res.text, "html.parser")
         ticket_map = {}
 
@@ -52,7 +52,6 @@ def fetch_ticket_id_name_map():
     except Exception as e:
         print("❌ 無法解析票種名稱：", e)
         return {}
-
 
 def check_kktix():
     print("🔁 check_kktix triggered")
