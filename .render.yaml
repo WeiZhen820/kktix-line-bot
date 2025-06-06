@@ -1,7 +1,14 @@
 services:
-  - type: cron
-    name: kktix-line-bot
-    env: docker
-    schedule: "*/1 * * * *"
-    dockerfilePath: ./Dockerfile
+  - type: web
+    name: kktix-bot
+    env: python
     plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app
+    envVars:
+      - key: LINE_TOKEN
+        sync: false
+      - key: LINE_GROUP_ID
+        sync: false
+      - key: KKTIX_URL
+        sync: false
