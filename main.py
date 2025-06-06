@@ -2,6 +2,7 @@
 import certifi
 import os
 import requests
+import urllib3
 from flask import Flask
 
 app = Flask(__name__)
@@ -35,7 +36,8 @@ def send_line_notify(message):
 def check_kktix():
     print("🔁 check_kktix triggered")
     try:
-        response = requests.get(KKTIX_URL, headers=headers, verify=certifi.where())
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        response = requests.get(KKTIX_URL, headers=headers, verify=False)
         print(response.text[:1000])  # debug: 印出前段 HTML 內容
 
         if "已售完" not in response.text:
