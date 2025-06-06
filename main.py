@@ -1,7 +1,8 @@
-# 📁 main.py（修正 user-data-dir 問題）
+# 📁 main.py（修正 user-data-dir 為 UUID 避免重複）
 
 import os
 import time
+import uuid
 import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -38,7 +39,10 @@ def check_kktix():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36")
-    options.add_argument(f"--user-data-dir=/tmp/selenium_profile_{int(time.time())}")  # 防止 session 被佔用錯誤
+
+    # 避免 Chrome user data session 衝突
+    temp_profile_dir = f"/tmp/selenium_profile_{uuid.uuid4()}"
+    options.add_argument(f"--user-data-dir={temp_profile_dir}")
 
     driver = webdriver.Chrome(options=options)
 
