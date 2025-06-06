@@ -30,9 +30,11 @@ def send_line_notify(message):
 
 def check_kktix():
     options = Options()
+    options.binary_location = os.getenv("CHROME_BIN", "/usr/bin/chromium")
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
+    
     driver = webdriver.Chrome(options=options)
 
     try:
@@ -66,8 +68,13 @@ def hello():
 
 @app.route("/check")
 def run_check():
-    check_kktix()
-    return "Checked."
+    print("🔁 /check triggered")
+    try:
+        check_kktix()
+        return "Checked", 200
+    except Exception as e:
+        print("❌ 發生錯誤:", e)
+        return f"Error: {e}", 500
 
 @app.route("/groupid", methods=["POST"])
 def get_group_id():
