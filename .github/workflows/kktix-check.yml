@@ -2,7 +2,7 @@ name: KKTIX Check Every 1 Min
 
 on:
   schedule:
-    - cron: "*/1 * * * *"
+    - cron: "* * * * *"
   workflow_dispatch:
 
 jobs:
