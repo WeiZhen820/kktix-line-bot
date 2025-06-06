@@ -1,9 +1,13 @@
+# 📁 main.py
 import os
 import time
 import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from flask import Flask
+
+app = Flask(__name__)
 
 LINE_TOKEN = os.getenv("LINE_TOKEN")
 LINE_GROUP_ID = os.getenv("LINE_GROUP_ID")
@@ -55,5 +59,16 @@ def check_kktix():
         driver.quit()
 
 
-if __name__ == "__main__":
+@app.route("/")
+def hello():
+    return "KKTIX LINE bot is running."
+
+
+@app.route("/check")
+def run_check():
     check_kktix()
+    return "Checked."
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
