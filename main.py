@@ -40,9 +40,8 @@ def check_kktix():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36")
 
-    # 避免 Chrome user data session 衝突
-    temp_profile_dir = f"/tmp/selenium_profile_{uuid.uuid4()}"
-    options.add_argument(f"--user-data-dir={temp_profile_dir}")
+    options.add_argument("--headless")
+    options.add_argument("--incognito")
 
     driver = webdriver.Chrome(options=options)
 
