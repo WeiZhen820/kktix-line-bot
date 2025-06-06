@@ -32,16 +32,21 @@ def send_line_notify(message):
     res = requests.post(url, headers=headers_line, json=body)
     print("LINE 回應:", res.text)
 
+def extract_ticket_prices(html):
+    pattern = re.compile(r'"ticket_class_name":"(.*?)","ticket_price":(\d+)')
+    matches = pattern.findall(html)
+    if not matches:
+        return "⚠️ 找不到票價資訊"
+    return "\n".join([f"🎫 {name}: {price} 元" for name, price in matches])
 
 def check_kktix():
     print("🔁 check_kktix triggered")
     try:
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
         response = requests.get(KKTIX_URL, headers=headers, verify=False)
-        print(response.text[:1000])  # debug: 印出前段 HTML 內容
 
         if "已售完" not in response.text:
-            send_line_notify(f"🎟️ 有票啦！\n{KKTIX_URL}")
+            send_line_notify(f"🎟️ 有票啦！\n{KKTIX_URL}\n\n{ticket_info}")
         else:
             print("❌ 目前全部已售完")
     except Exception as e:
