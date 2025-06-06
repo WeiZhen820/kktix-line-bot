@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Call Render /check
-        run: curl -s https://你的-render-app.onrender.com/check
+        run: curl -s https://kktix-line-bot.onrender.com/check
