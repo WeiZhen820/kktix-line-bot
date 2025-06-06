@@ -33,7 +33,7 @@ def send_line_notify(message):
     print("LINE 回應:", res.text)
 
 def extract_ticket_prices(html):
-    pattern = re.compile(r'"ticket_class_name":"(.*?)","ticket_price":(\d+)')
+    pattern = re.compile(r'"ticket-name":"(.*?)","ticket-price":(\d+)')
     matches = pattern.findall(html)
     if not matches:
         return "⚠️ 找不到票價資訊"
@@ -43,16 +43,21 @@ def check_kktix():
     print("🔁 check_kktix triggered")
     try:
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-        response = requests.get(KKTIX_URL, headers=headers, verify=False)
+        response = requests.get(
+            "https://kktix.com/g/events/t982878a/register_info", 
+            headers=headers, verify=False
+        )
+        data = response.json()
 
-        if "已售完" not in response.text:
-            ticket_info = extract_ticket_prices(response.text)
-            send_line_notify(f"🎟️ 有票啦！\n{KKTIX_URL}\n\n{ticket_info}")
-        else:
-            print("❌ 目前全部已售完")
+        if data.get("register_status") != "SOLD_OUT":
+            tickets = data.get("tickets", [])
+            for t in tickets:
+                if t.get("in_stock"):
+                    send_line_notify(f"🎟️ 有票啦！\nhttps://kktix.com/events/t982878a/registrations/new")
+                    return
+        print("❌ 目前全部已售完")
     except Exception as e:
         print("❌ 錯誤：", e)
-
 
 @app.route("/")
 def home():
