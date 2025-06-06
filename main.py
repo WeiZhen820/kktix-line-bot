@@ -46,6 +46,7 @@ def check_kktix():
         response = requests.get(KKTIX_URL, headers=headers, verify=False)
 
         if "已售完" not in response.text:
+            ticket_info = extract_ticket_prices(response.text)
             send_line_notify(f"🎟️ 有票啦！\n{KKTIX_URL}\n\n{ticket_info}")
         else:
             print("❌ 目前全部已售完")
