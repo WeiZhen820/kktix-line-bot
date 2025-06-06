@@ -1,5 +1,5 @@
 # 📁 main.py（使用 requests 模擬瀏覽器，繞過 Cloudflare）
-
+import certifi
 import os
 import requests
 from flask import Flask
@@ -35,7 +35,7 @@ def send_line_notify(message):
 def check_kktix():
     print("🔁 check_kktix triggered")
     try:
-        response = requests.get(KKTIX_URL, headers=headers)
+        response = requests.get(KKTIX_URL, headers=headers, verify=certifi.where())
         print(response.text[:1000])  # debug: 印出前段 HTML 內容
 
         if "已售完" not in response.text:
