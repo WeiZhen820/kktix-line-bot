@@ -1,0 +1,13 @@
+name: KKTIX Check Every 1 Min
+
+on:
+  schedule:
+    - cron: "*/1 * * * *"
+  workflow_dispatch:
+
+jobs:
+  check-kktix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Render /check
+        run: curl -s https://你的-render-app.onrender.com/check
