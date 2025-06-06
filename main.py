@@ -32,13 +32,6 @@ def send_line_notify(message):
     res = requests.post(url, headers=headers_line, json=body)
     print("LINE 回應:", res.text)
 
-def extract_ticket_prices(html):
-    pattern = re.compile(r'"ticket-name":"(.*?)","ticket-price":(\d+)')
-    matches = pattern.findall(html)
-    if not matches:
-        return "⚠️ 找不到票價資訊"
-    return "\n".join([f"🎫 {name}: {price} 元" for name, price in matches])
-
 def check_kktix():
     print("🔁 check_kktix triggered")
     try:
