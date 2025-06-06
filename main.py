@@ -30,12 +30,14 @@ def send_line_notify(message):
 
 def check_kktix():
     options = Options()
-    options.binary_location = os.getenv("CHROME_BIN", "/usr/bin/chromium")
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
+    options.binary_location = os.getenv("CHROME_BIN", "/usr/bin/chromium")
+    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36")
     
     driver = webdriver.Chrome(options=options)
+    print(driver.page_source[:1000])  # 前1000字即可
 
     try:
         driver.get(KKTIX_URL)
