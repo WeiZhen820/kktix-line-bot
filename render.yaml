@@ -12,3 +12,10 @@ services:
         sync: false
       - key: KKTIX_URL
         sync: false
+
+  - type: cron
+      name: kktix-scheduler
+      env: python
+      schedule: "*/1 * * * *"  # 每 1 分鐘
+      buildCommand: pip install -r requirements.txt
+      startCommand: python worker.py
