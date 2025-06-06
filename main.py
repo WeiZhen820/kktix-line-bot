@@ -60,6 +60,11 @@ def check_kktix():
 
         ticket_names = fetch_ticket_id_name_map()
         res = requests.get(KKTIX_INFO_URL, headers=headers, verify=False)
+        print("回傳狀態碼:", res.status_code)
+        print("前 100 字:", res.text[:100])
+        if not res.text.strip().startswith("{"):
+            print("⚠️ 回傳不是 JSON，可能是 HTML 錯誤頁")
+            return
         data = res.json()
 
         if data.get("register_status") == "SOLD_OUT":
